@@ -108,7 +108,12 @@ class Scanner {
     private void identifier() {
          while (isAlphaNumeric(peek())) advance();
 
-         addToken(TokenType.IDENTIFIER);
+         String text = source.substring(start, current);
+         TokenType type = keywords.get(text);
+
+         if (type == null) type = TokenType.IDENTIFIER;
+
+         addToken(type);
     }
 
     private void number() {
