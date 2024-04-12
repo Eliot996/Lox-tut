@@ -78,6 +78,20 @@ class Scanner {
                 if (match('/')) {
                     // a comment goes until the end of the line
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if (match('*')) {
+                    int commentStartCount = 1;
+
+                    // advance past comment start
+                    char currentChar = advance();
+
+                    while (commentStartCount != 0 && !isAtEnd()) {
+                        if (currentChar == '\n') line++;
+
+                        if (currentChar == '*' && peek() == '/') commentStartCount--;
+                        if (currentChar == '/' && peek() == '*') commentStartCount++;
+
+                        currentChar = advance();
+                    }
                 } else {
                     addToken(TokenType.SLASH);
                 }
